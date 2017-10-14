@@ -1,30 +1,49 @@
 <template>
-  <div class="row">
-    <div class="col-lg-8 m-auto">
-      <card :title="$t('reset_password')">
+  <v-layout row>
+    <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
+      <v-card>
+        <v-progress-linear 
+          :indeterminate="true" 
+          height="4" 
+          v-if="form.busy"
+          color="accent"
+        >
+        </v-progress-linear>
         <form @submit.prevent="send" @keydown="form.onKeydown($event)">
-          <alert-success :form="form" :message="status"></alert-success>
+          <v-card-title primary-title>
+            <h3 class="headline mb-0">{{ $t('reset_password') }}</h3>
+          </v-card-title>
+          <v-card-text>
+            <v-alert 
+              color="success" 
+              icon="check_circle" 
+              v-model="form.successful" 
+              dismissible>
+              {{ status }}
+            </v-alert>
 
-          <!-- Email -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
-            <div class="col-md-7">
-              <input v-model="form.email" type="email" name="email" class="form-control"
-                :class="{ 'is-invalid': form.errors.has('email') }">
-              <has-error :form="form" field="email"></has-error>
-            </div>
-          </div>
+            <!-- Email -->
+            <v-text-field
+              name="email"
+              type="email"
+              v-model="form.email"
+              :label="$t('email')"
+              :error-messages="errors.collect('email')"
+              v-validate="'required|email'"
+              :class="{ 'input-group--error error--text': form.errors.has('email') }"
+            ></v-text-field>
+            <has-error :form="form" field="email"></has-error>
 
-          <!-- Submit Button -->
-          <div class="form-group row">
-            <div class="col-md-9 ml-md-auto">
-              <v-button :loading="form.busy">{{ $t('send_password_reset_link') }}</v-button>
-            </div>
-          </div>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn :loading="form.busy" :disabled="form.busy" type="submit">
+              {{ $t('send_password_reset_link') }}
+            </v-btn>
+          </v-card-actions>
         </form>
-      </card>
-    </div>
-  </div>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -44,6 +63,8 @@ export default {
 
   methods: {
     async send () {
+      if (await this.formHasErrors()) return
+
       const { data } = await this.form.post('/api/password/email')
 
       this.status = data.status

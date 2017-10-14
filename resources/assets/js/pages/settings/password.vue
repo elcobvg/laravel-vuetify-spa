@@ -1,36 +1,49 @@
 <template>
-  <card :title="$t('your_password')">
+  <v-card flat>
     <form @submit.prevent="update" @keydown="form.onKeydown($event)">
-      <alert-success :form="form" :message="$t('password_updated')"></alert-success>
+      <v-card-title primary-title>
+        <h5 class="subheading mb-0">{{ $t('your_password') }}</h5>
+      </v-card-title>
+      <v-card-text>
+        <v-alert 
+          color="success" 
+          icon="check_circle" 
+          v-model="form.successful" 
+          dismissible>
+          {{ $t('password_updated') }}
+        </v-alert>
 
-      <!-- Password -->
-      <div class="form-group row">
-        <label class="col-md-3 col-form-label text-md-right">{{ $t('new_password') }}</label>
-        <div class="col-md-7">
-          <input v-model="form.password" type="password" name="password" class="form-control"
-            :class="{ 'is-invalid': form.errors.has('password') }">
-          <has-error :form="form" field="password"></has-error>
-        </div>
-      </div>
+        <!-- Password -->
+        <v-text-field
+          name="password"
+          v-model="form.password"
+          type="password"
+          :hint="$t('password_length_hint')"
+          :label="$t('password')"
+          :error-messages="errors.collect('password')"
+          v-validate="'min:8'"
+          :class="{ 'input-group--error error--text': form.errors.has('password') }"
+        ></v-text-field>
+        <has-error :form="form" field="password"></has-error>
 
-      <!-- Password Confirmation -->
-      <div class="form-group row">
-        <label class="col-md-3 col-form-label text-md-right">{{ $t('confirm_password') }}</label>
-        <div class="col-md-7">
-          <input v-model="form.password_confirmation" type="password" name="password_confirmation" class="form-control"
-            :class="{ 'is-invalid': form.errors.has('password_confirmation') }">
-          <has-error :form="form" field="password_confirmation"></has-error>
-        </div>
-      </div>
-
-      <!-- Submit Button -->
-      <div class="form-group row">
-        <div class="col-md-9 ml-md-auto">
-          <v-button type="success" :loading="form.busy">{{ $t('update') }}</v-button>
-        </div>
-      </div>
+        <!-- Password Confirmation -->
+        <v-text-field
+          name="password_confirmation"
+          type="password"
+          v-model="form.password_confirmation"
+          :label="$t('confirm_password')"
+          :error-messages="errors.collect('password_confirmation')"
+          v-validate="'confirmed:password'"
+          data-vv-as="password"
+          :class="{ 'input-group--error error--text': form.errors.has('password_confirmation') }"
+        ></v-text-field>
+        <has-error :form="form" field="password_confirmation"></has-error>        
+      </v-card-text>
+      <v-card-actions>
+        <v-btn :loading="form.busy" :disabled="form.busy" type="submit">{{ $t('update') }}</v-btn>
+      </v-card-actions>
     </form>
-  </card>
+  </v-card>
 </template>
 
 <script>
@@ -46,6 +59,8 @@ export default {
 
   methods: {
     async update () {
+      if (await this.formHasErrors()) return
+
       await this.form.patch('/api/settings/password')
 
       this.form.reset()

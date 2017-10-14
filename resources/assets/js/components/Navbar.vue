@@ -1,55 +1,25 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-      <router-link :to="{ name: 'welcome' }" class="navbar-brand">
+  <v-toolbar fixed app dark color="primary">
+    <v-toolbar-side-icon @click.stop="toggleDrawer" v-if="authenticated"></v-toolbar-side-icon>
+    <v-toolbar-title>
+      <router-link :to="{ name: 'welcome' }" class="white--text">
         {{ appName }}
       </router-link>
+    </v-toolbar-title>
+    <v-spacer></v-spacer>
 
-      <button class="navbar-toggler" type="button" data-toggle="collapse"
-        data-target="#navbarToggler" aria-controls="navbarToggler"
-        aria-expanded="false" :aria-label="$t('toggle_navigation')"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <!-- Authenticated -->
+    <template v-if="authenticated">
+      <v-btn flat :to="{ name: 'settings.profile' }">{{ user.name }}</v-btn>
+      <v-btn flat @click.prevent="logout">{{ $t('logout') }}</v-btn>
+    </template>
 
-      <div class="collapse navbar-collapse" id="navbarToggler">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li> -->
-        </ul>
-
-        <ul class="navbar-nav">
-          <!-- Authenticated -->
-          <template v-if="authenticated">
-            <router-link :to="{ name: 'settings.profile' }" tag="li" class="nav-item">
-              <a class="nav-link">
-                {{ user.name }}
-              </a>
-            </router-link>
-            <li class="nav-item">
-              <a @click.prevent="logout" href="#" class="nav-link">
-                {{ $t('logout') }}
-              </a>
-            </li>
-          </template>
-          <!-- Guest -->
-          <template v-else>
-            <li class="nav-item">
-              <router-link :to="{ name: 'login' }" class="nav-link" active-class="active">
-                {{ $t('login') }}
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link :to="{ name: 'register' }" class="nav-link" active-class="active">
-                {{ $t('register') }}
-              </router-link>
-            </li>
-          </template>
-        </ul>
-      </div>
-    </div>
-  </nav>
+    <!-- Guest -->
+    <template v-else>
+      <v-btn flat :to="{ name: 'login' }">{{ $t('login') }}</v-btn>
+      <v-btn flat :to="{ name: 'register' }">{{ $t('register') }}</v-btn>
+    </template>
+  </v-toolbar>
 </template>
 
 <script>
@@ -66,6 +36,9 @@ export default {
   }),
 
   methods: {
+    toggleDrawer () {
+      this.$emit('toggleDrawer')
+    },
     async logout () {
       // Log out the user.
       await this.$store.dispatch('logout')
@@ -77,8 +50,10 @@ export default {
 }
 </script>
 
-<style scoped>
-.navbar {
-  border: 1px solid #d3e0e9;
-}
+<style lang="stylus" scoped>
+
+.toolbar__title 
+  .router-link-active
+    text-decoration: none !important
+
 </style>

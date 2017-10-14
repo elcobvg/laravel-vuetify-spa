@@ -1,14 +1,16 @@
 # Laravel-Vue SPA Starter
 
-[![Build Status](https://img.shields.io/travis/cretueusebiu/laravel-vue-spa/master.svg?style=flat-square)](https://travis-ci.org/cretueusebiu/laravel-vue-spa)
+> A Laravel-Vue SPA starter project template with Vuetify frontend. 
 
-> A Laravel-Vue SPA starter project template.
+Forked from https://github.com/cretueusebiu/laravel-vue-spa
 
 ## Features
 
 - Laravel 5.5 + Vue + Vue Router + Vuex
+- Frontend built with [Vuetify](https://github.com/vuetifyjs/vuetify) UI framework
 - Pages with custom layouts 
 - Examples for login, register and password reset
+- Client-side form validation with [VeeValidate] (https://github.com/baianat/vee-validate)
 - Integration with [vform](https://github.com/cretueusebiu/vform)
 - Authentication with [JWT](https://github.com/tymondesigns/jwt-auth)
 - Webpack with [laravel-mix](https://github.com/JeffreyWay/laravel-mix)
@@ -16,7 +18,7 @@
 
 ## Installation
 
-- `git clone https://github.com/cretueusebiu/laravel-vue-spa.git`
+- `git clone https://github.com/elcobvg/laravel-vue-spa.git`
 - `cd laravel-vue-spa`
 - `cp .env.example .env`
 - `composer install`

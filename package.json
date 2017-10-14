@@ -8,20 +8,20 @@
     "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "prod": "npm run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "lint": "eslint resources/assets/js"
+    "lint": "eslint resources/assets/js/**/*"
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "bootstrap": "4.0.0-beta",
-    "jquery": "^3.2.1",
     "js-cookie": "^2.1.4",
     "popper.js": "^1.12.5",
     "sweetalert2": "^6.6.9",
+    "vee-validate": "^2.0.0-rc.19",
     "vform": "^0.8.1",
     "vue": "^2.4.2",
     "vue-i18n": "^7.2.0",
     "vue-meta": "^1.1.0",
     "vue-router": "^2.7.0",
+    "vuetify": "^0.16.6",
     "vuex": "^2.4.0",
     "vuex-router-sync": "^4.2.0"
   },
@@ -33,6 +33,9 @@
     "eslint": "^3.19.0",
     "eslint-plugin-vue-libs": "^1.2.1",
     "laravel-mix": "^1.4.2",
+    "standard": "^10.0.3",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
     "svg-sprite-loader": "^3.2.5",
     "vue-template-compiler": "^2.4.2",
     "webpack-bundle-analyzer": "^2.9.0"

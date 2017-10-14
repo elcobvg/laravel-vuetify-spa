@@ -1,36 +1,46 @@
 <template>
-  <card :title="$t('your_info')">
+  <v-card flat>
     <form @submit.prevent="update" @keydown="form.onKeydown($event)">
-      <alert-success :form="form" :message="$t('info_updated')"></alert-success>
+      <v-card-title primary-title>
+        <h5 class="subheading mb-0">{{ $t('your_info') }}</h5>
+      </v-card-title>
+      <v-card-text>
+        <v-alert 
+          color="success" 
+          icon="check_circle" 
+          v-model="form.successful" 
+          dismissible>
+          {{ $t('info_updated') }}
+        </v-alert>
 
-      <!-- Name -->
-      <div class="form-group row">
-        <label class="col-md-3 col-form-label text-md-right">{{ $t('name') }}</label>
-        <div class="col-md-7">
-          <input v-model="form.name" type="text" name="name" class="form-control"
-            :class="{ 'is-invalid': form.errors.has('name') }">
-          <has-error :form="form" field="name"></has-error>
-        </div>
-      </div>
+        <!-- Name -->
+        <v-text-field
+          name="name"
+          v-model="form.name"
+          :label="$t('name')"
+          :error-messages="errors.collect('name')"
+          v-validate="'required|max:30'"
+          :class="{ 'input-group--error error--text': form.errors.has('name') }"
+        ></v-text-field>
+        <has-error :form="form" field="name"></has-error>
 
-      <!-- Email -->
-      <div class="form-group row">
-        <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
-        <div class="col-md-7">
-          <input v-model="form.email" type="email" name="email" class="form-control"
-            :class="{ 'is-invalid': form.errors.has('email') }">
-          <has-error :form="form" field="email"></has-error>
-        </div>
-      </div>
-
-      <!-- Submit Button -->
-      <div class="form-group row">
-        <div class="col-md-9 ml-md-auto">
-          <v-button type="success" :loading="form.busy">{{ $t('update') }}</v-button>
-        </div>
-      </div>
+        <!-- Email -->
+        <v-text-field
+          name="email"
+          type="email"
+          v-model="form.email"
+          :label="$t('email')"
+          :error-messages="errors.collect('email')"
+          v-validate="'required|email'"
+          :class="{ 'input-group--error error--text': form.errors.has('email') }"
+        ></v-text-field>
+        <has-error :form="form" field="email"></has-error>     
+      </v-card-text>
+      <v-card-actions>
+        <v-btn :loading="form.busy" :disabled="form.busy" type="submit">{{ $t('update') }}</v-btn>
+      </v-card-actions>
     </form>
-  </card>
+  </v-card>
 </template>
 
 <script>
@@ -58,6 +68,8 @@ export default {
 
   methods: {
     async update () {
+      if (await this.formHasErrors()) return
+
       const { data } = await this.form.patch('/api/settings/profile')
 
       this.$store.dispatch('updateUser', { user: data })

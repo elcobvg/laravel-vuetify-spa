@@ -1,50 +1,71 @@
 <template>
-  <div class="row">
-    <div class="col-lg-8 m-auto">
-      <card :title="$t('login')">
+  <v-layout row>
+    <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
+      <v-card>
+        <v-progress-linear 
+          :indeterminate="true" 
+          height="4" 
+          v-if="form.busy"
+          color="accent"
+        >
+        </v-progress-linear>
         <form @submit.prevent="login" @keydown="form.onKeydown($event)">
-          <!-- Email -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('email') }}</label>
-            <div class="col-md-7">
-              <input v-model="form.email" type="email" name="email" class="form-control"
-                :class="{ 'is-invalid': form.errors.has('email') }">
-              <has-error :form="form" field="email"></has-error>
-            </div>
-          </div>
+          <v-card-title primary-title>
+            <h3 class="headline mb-0">{{ $t('login') }}</h3>
+          </v-card-title>
+          <v-card-text>
 
-          <!-- Password -->
-          <div class="form-group row">
-            <label class="col-md-3 col-form-label text-md-right">{{ $t('password') }}</label>
-            <div class="col-md-7">
-              <input v-model="form.password" type="password" name="password" class="form-control"
-                :class="{ 'is-invalid': form.errors.has('password') }">
-              <has-error :form="form" field="password"></has-error>
-            </div>
-          </div>
+            <!-- Email -->
+            <v-text-field
+              name="email"
+              type="email"
+              v-model="form.email"
+              :label="$t('email')"
+              :error-messages="errors.collect('email')"
+              v-validate="'required|email'"
+              :class="{ 'input-group--error error--text': form.errors.has('email') }"
+              prepend-icon="person_outline"
+            ></v-text-field>
+            <has-error :form="form" field="email"></has-error>
 
-          <!-- Remember Me -->
-          <div class="form-group row">
-            <div class="col-md-3"></div>
-            <div class="col-md-7">
-              <router-link :to="{ name: 'password.request' }" class="float-right small">
-                {{ $t('forgot_password') }}
-              </router-link>
+            <!-- Password -->
+            <v-text-field
+              name="password"
+              v-model="form.password"
+              type="password"
+              :label="$t('password')"
+              :error-messages="errors.collect('password')"
+              v-validate="'required|min:8'"
+              :class="{ 'input-group--error error--text': form.errors.has('password') }"
+              prepend-icon="lock_outline"
+            ></v-text-field>
+            <has-error :form="form" field="password"></has-error>
 
-              <checkbox v-model="remember">{{ $t('remember_me') }}</checkbox>
-            </div>
-          </div>
+            <!-- Remember Me -->
+            <v-checkbox
+              color="primary"
+              v-model="remember"
+              value="true"
+              :label="$t('remember_me')"
+              type="checkbox"
+            ></v-checkbox>
 
-          <!-- Submit Button -->
-          <div class="form-group row">
-            <div class="col-md-9 ml-md-auto">
-              <v-button :loading="form.busy">{{ $t('login') }}</v-button>
-            </div>
-          </div>
+            <v-btn block :loading="form.busy" :disabled="form.busy" type="submit">{{ $t('login') }}</v-btn>
+
+          </v-card-text>
+          <v-card-actions>
+            <router-link :to="{ name: 'register' }">
+              {{ $t('register') }}
+            </router-link>
+            <v-spacer></v-spacer>
+            <router-link :to="{ name: 'password.request' }">
+              {{ $t('forgot_password') }}
+            </router-link>
+          </v-card-actions>
         </form>
-      </card>
-    </div>
-  </div>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -54,7 +75,6 @@ export default {
   metaInfo () {
     return { title: this.$t('login') }
   },
-
   data: () => ({
     form: new Form({
       email: '',
@@ -65,6 +85,8 @@ export default {
 
   methods: {
     async login () {
+      if (await this.formHasErrors()) return
+
       // Submit the form.
       const { data } = await this.form.post('/api/login')
 
