@@ -1,9 +1,15 @@
 <template>
   <v-app light>
-    <v-navigation-drawer persistent v-model="drawer" enable-resize-watcher app>
+    <v-navigation-drawer 
+      v-if="authenticated" 
+      persistent 
+      v-model="drawer" 
+      enable-resize-watcher 
+      app
+    >
       <nav-menu></nav-menu>
     </v-navigation-drawer>
-    <tool-bar v-on:toggleDrawer="drawer = !drawer"></tool-bar>
+    <tool-bar v-on:toggleDrawer="drawer = !drawer" :drawer="drawer"></tool-bar>
     <main>
       <v-content>
         <v-container fluid>
@@ -17,6 +23,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import NavMenu from '~/components/NavMenu'
 import ToolBar from '~/components/ToolBar'
 import ErrorDialog from '~/components/ErrorDialog'
@@ -29,6 +37,11 @@ export default {
     'error-dialog': ErrorDialog,
     'page-footer': PageFooter
   },
+
+  computed: mapGetters({
+    authenticated: 'authCheck'
+  }),
+
   data () {
     return {
       drawer: true

@@ -29,5 +29,6 @@
   "your_password": "Your Password",
   "password_updated": "Your password has been updated!",
   "new_password": "New Password",
-  "password_length_hint": "At least 8 characters"
+  "password_length_hint": "At least 8 characters",
+  "nav_menu_title": "Application Menu"
 }

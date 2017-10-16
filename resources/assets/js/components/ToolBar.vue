@@ -1,6 +1,6 @@
 <template>
   <v-toolbar fixed app dark color="primary">
-    <v-toolbar-side-icon @click.stop="toggleDrawer"></v-toolbar-side-icon>
+    <v-toolbar-side-icon @click.stop="toggleDrawer" v-if="authenticated"></v-toolbar-side-icon>
     <v-toolbar-title>
       <router-link :to="{ name: 'welcome' }" class="white--text">
         {{ appName }}
@@ -26,6 +26,10 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  props: {
+    drawer: Boolean
+  },
+
   data: () => ({
     appName: window.config.appName
   }),
@@ -40,6 +44,10 @@ export default {
       this.$emit('toggleDrawer')
     },
     async logout () {
+      if (this.drawer) {
+        this.toggleDrawer()
+      }
+
       // Log out the user.
       await this.$store.dispatch('logout')
 
@@ -52,8 +60,7 @@ export default {
 
 <style lang="stylus" scoped>
 
-.toolbar__title 
-  .router-link-active
-    text-decoration: none !important
+.toolbar__title .router-link-active
+  text-decoration: none
 
 </style>

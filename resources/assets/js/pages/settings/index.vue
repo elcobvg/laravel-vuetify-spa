@@ -17,6 +17,7 @@
               {{ $t('password') }}
             </v-tabs-item>
           </v-tabs-bar>
+          <v-divider></v-divider>
 
           <v-tabs-items>
             <v-tabs-content id="tab-person">
