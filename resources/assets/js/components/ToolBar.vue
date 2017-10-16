@@ -37,7 +37,7 @@ export default {
 
   methods: {
     toggleDrawer () {
-      this.$store.dispatch('toggleDrawer')
+      this.$emit('toggleDrawer')
     },
     async logout () {
       // Log out the user.

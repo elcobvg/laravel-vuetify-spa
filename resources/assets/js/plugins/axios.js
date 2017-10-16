@@ -8,8 +8,6 @@ axios.interceptors.request.use(request => {
     request.headers.common['Authorization'] = `Bearer ${store.getters.authToken}`
   }
 
-  // request.headers['X-Socket-Id'] = Echo.socketId()
-
   return request
 })
 

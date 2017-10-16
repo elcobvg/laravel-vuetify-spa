@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as types from './mutation-types'
 
 Vue.use(Vuex)
 
@@ -18,21 +17,5 @@ const modules = requireContext.keys()
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
-  modules,
-  state: {
-    drawer: true
-  },
-  mutations: {
-    [types.TOGGLE_DRAWER] (state) {
-      state.drawer = !state.drawer
-    }
-  },
-  actions: {
-    toggleDrawer ({ commit }) {
-      commit(types.TOGGLE_DRAWER)
-    }
-  },
-  getters: {
-    drawer: state => state.drawer
-  }
+  modules
 })
