@@ -1,7 +1,7 @@
 <template>
   <v-app light>
-    <navdrawer></navdrawer>
-    <navbar></navbar>
+    <nav-drawer></nav-drawer>
+    <tool-bar></tool-bar>
     <main>
       <v-content>
         <v-container fluid>
@@ -9,23 +9,20 @@
         </v-container>
       </v-content>
     </main>
-    <v-footer app></v-footer>
+    <page-footer></page-footer>
   </v-app>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
-import Navbar from '~/components/Navbar'
-import Navdrawer from '~/components/Navdrawer'
+import NavDrawer from '~/components/NavDrawer'
+import ToolBar from '~/components/ToolBar'
+import PageFooter from '~/components/PageFooter'
 
 export default {
-  name: 'app-layout',
-
   components: {
-    Navbar,
-    Navdrawer
+    'nav-drawer': NavDrawer,
+    'tool-bar': ToolBar,
+    'page-footer': PageFooter
   }
 }
 </script>
-

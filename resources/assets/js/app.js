@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import VeeValidate from 'vee-validate'
 import store from '~/store'
 import router from '~/router'
 import { i18n } from '~/plugins'
@@ -8,7 +7,6 @@ import App from '~/components/App'
 import '~/components'
 
 Vue.use(Vuetify)
-Vue.use(VeeValidate, { delay: 250 })
 
 Vue.config.productionTip = false
 

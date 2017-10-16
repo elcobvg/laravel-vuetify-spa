@@ -1,3 +1,5 @@
+export const TOGGLE_DRAWER = 'TOGGLE_DRAWER'
+
 // auth.js
 export const LOGOUT = 'LOGOUT'
 export const SAVE_TOKEN = 'SAVE_TOKEN'

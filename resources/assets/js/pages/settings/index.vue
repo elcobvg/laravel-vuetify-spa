@@ -37,12 +37,10 @@ import Profile from '~/pages/settings/profile'
 import Password from '~/pages/settings/password'
 
 export default {
-  loading: false,
-
   components: {
     Profile,
     Password
-  },
+  }
 }
 </script>
 

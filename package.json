@@ -8,12 +8,11 @@
     "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "prod": "npm run production",
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "lint": "eslint resources/assets/js/**/*"
+    "lint": "standard --plugin html resources/assets/js/**/*"
   },
   "dependencies": {
     "axios": "^0.16.2",
     "js-cookie": "^2.1.4",
-    "popper.js": "^1.12.5",
     "sweetalert2": "^6.6.9",
     "vee-validate": "^2.0.0-rc.19",
     "vform": "^0.8.1",
@@ -31,6 +30,7 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "cross-env": "^5.0.5",
     "eslint": "^3.19.0",
+    "eslint-plugin-html": "^3.2.2",
     "eslint-plugin-vue-libs": "^1.2.1",
     "laravel-mix": "^1.4.2",
     "standard": "^10.0.3",

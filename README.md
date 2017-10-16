@@ -10,11 +10,10 @@ Forked from https://github.com/cretueusebiu/laravel-vue-spa
 - Frontend built with [Vuetify](https://github.com/vuetifyjs/vuetify) UI framework
 - Pages with custom layouts 
 - Examples for login, register and password reset
-- Client-side form validation with [VeeValidate] (https://github.com/baianat/vee-validate)
+- Client-side form validation with [VeeValidate](https://github.com/baianat/vee-validate)
 - Integration with [vform](https://github.com/cretueusebiu/vform)
 - Authentication with [JWT](https://github.com/tymondesigns/jwt-auth)
 - Webpack with [laravel-mix](https://github.com/JeffreyWay/laravel-mix)
-- SVG icons with [svg-sprite-loader](https://github.com/kisenka/svg-sprite-loader)
 
 ## Installation
 
@@ -46,6 +45,7 @@ npm run hot
 npm run production
 ```
 
+[![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
 
 ## Changelog
 
