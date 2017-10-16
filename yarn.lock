@@ -6339,10 +6339,6 @@ svgo@^0.7.0:
     sax "~1.2.1"
     whet.extend "~0.9.9"
 
-sweetalert2@^6.6.9:
-  version "6.10.2"
-  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-6.10.2.tgz#2fdd0d70027d142a08b6b96d4525c71fddfcfe85"
-
 table@^3.7.8:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/table/-/table-3.8.3.tgz#2bbc542f0fda9861a755d3947fefd8b3f513855f"
@@ -6836,8 +6832,8 @@ vue@^2.4.2:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.2.tgz#fd367a87bae7535e47f9dc5c9ec3b496e5feb5a4"
 
 vuetify@^0.16.6:
-  version "0.16.6"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-0.16.6.tgz#76f3f6eb507116935469261c021f3e50055214cf"
+  version "0.16.7"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-0.16.7.tgz#06540b323deabc7077a6164b0cd125c49b8fd787"
 
 vuex-router-sync@^4.2.0:
   version "4.3.2"
@@ -6898,8 +6894,8 @@ webpack-dev-middleware@^1.11.0:
     time-stamp "^2.0.0"
 
 webpack-dev-server@^2.5.1:
-  version "2.9.1"
-  resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-2.9.1.tgz#7ac9320b61b00eb65b2109f15c82747fc5b93585"
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-2.9.2.tgz#0fbab915701d25a905a60e1e784df19727da800f"
   dependencies:
     ansi-html "0.0.7"
     array-includes "^3.0.3"

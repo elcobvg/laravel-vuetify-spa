@@ -13,7 +13,6 @@
   "dependencies": {
     "axios": "^0.16.2",
     "js-cookie": "^2.1.4",
-    "sweetalert2": "^6.6.9",
     "vee-validate": "^2.0.0-rc.19",
     "vform": "^0.8.1",
     "vue": "^2.4.2",

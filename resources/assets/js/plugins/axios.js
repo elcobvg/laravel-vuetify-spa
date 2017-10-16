@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from '~/store'
 import router from '~/router'
-import swal from 'sweetalert2'
+import i18n from './vue-i18n'
 
 axios.interceptors.request.use(request => {
   if (store.getters.authToken) {
@@ -17,18 +17,18 @@ axios.interceptors.response.use(response => response, error => {
   const { status } = error.response
 
   if (status >= 500) {
-    swal({
+    store.dispatch('responseError', {
       type: 'error',
-      title: swal.i18n.t('error_alert_title'),
-      text: swal.i18n.t('error_alert_text')
+      title: i18n.t('error_alert_title'),
+      text: i18n.t('error_alert_text')
     })
   }
 
   if (status === 401 && store.getters.authCheck) {
-    swal({
+    store.dispatch('responseError', {
       type: 'warning',
-      title: swal.i18n.t('token_expired_alert_title'),
-      text: swal.i18n.t('token_expired_alert_text')
+      title: i18n.t('token_expired_alert_title'),
+      text: i18n.t('token_expired_alert_text')
     })
     .then(async () => {
       await store.dispatch('logout')
