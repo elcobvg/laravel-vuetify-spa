@@ -2,7 +2,7 @@
   <v-layout row justify-center>
     <v-dialog :value.sync="responseError.type" persistent>
       <v-card>
-        <v-card-title class="headline" :class="responseError.type">{{ responseError.title }}</v-card-title>
+        <v-card-title class="headline white--text" :class="responseError.type">{{ responseError.title }}</v-card-title>
         <v-divider></v-divider>
         <v-card-text>{{ responseError.text }}</v-card-text>
         <v-layout row justify-center>

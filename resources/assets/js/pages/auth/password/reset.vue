@@ -14,13 +14,6 @@
             <h3 class="headline mb-0">{{ $t('reset_password') }}</h3>
           </v-card-title>
           <v-card-text>
-            <v-alert 
-              color="success" 
-              icon="check_circle" 
-              v-model="form.successful" 
-              dismissible>
-              {{ status }}
-            </v-alert>
 
             <!-- Email -->
             <v-text-field
@@ -59,6 +52,13 @@
               :class="{ 'input-group--error error--text': form.errors.has('password_confirmation') }"
             ></v-text-field>
             <has-error :form="form" field="password_confirmation"></has-error>
+
+            <v-alert 
+              color="success" 
+              v-model="form.successful" 
+              dismissible>
+              {{ status }}
+            </v-alert>
           </v-card-text>
 
           </v-card-text>

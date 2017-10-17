@@ -5,13 +5,6 @@
         <h5 class="subheading mb-0">{{ $t('your_info') }}</h5>
       </v-card-title>
       <v-card-text>
-        <v-alert 
-          color="success" 
-          icon="check_circle" 
-          v-model="form.successful" 
-          dismissible>
-          {{ $t('info_updated') }}
-        </v-alert>
 
         <!-- Name -->
         <v-text-field
@@ -35,9 +28,25 @@
           :class="{ 'input-group--error error--text': form.errors.has('email') }"
         ></v-text-field>
         <has-error :form="form" field="email"></has-error>     
+
+        <v-alert 
+          color="success" 
+          v-model="form.successful"
+          transition="scale-transition"
+          dismissible
+        >
+          {{ $t('info_updated') }}
+        </v-alert>
       </v-card-text>
       <v-card-actions>
-        <v-btn :loading="form.busy" :disabled="form.busy" type="submit">{{ $t('update') }}</v-btn>
+        <v-btn 
+          :loading="form.busy" 
+          :disabled="form.busy" 
+          type="submit"
+          @click="$emit('busy', true)"
+        >
+          {{ $t('update') }}
+        </v-btn>
       </v-card-actions>
     </form>
   </v-card>
@@ -72,7 +81,14 @@ export default {
 
       const { data } = await this.form.patch('/api/settings/profile')
 
-      this.$store.dispatch('updateUser', { user: data })
+      await this.$store.dispatch('updateUser', { user: data })
+      this.$emit('busy', false)
+    }
+  },
+
+  watch: {
+    form () {
+      console.log(this.form)
     }
   }
 }

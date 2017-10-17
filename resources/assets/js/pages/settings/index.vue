@@ -2,6 +2,13 @@
   <v-layout row>
     <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
       <v-card>
+        <v-progress-linear 
+          :indeterminate="true" 
+          height="4" 
+          v-if="busy"
+          color="accent"
+        >
+        </v-progress-linear>
         <v-card-title primary-title class="grey lighten-4">
           <h3 class="headline mb-0">{{ $t('settings') }}</h3>
         </v-card-title>
@@ -21,10 +28,10 @@
 
           <v-tabs-items>
             <v-tabs-content id="tab-person">
-              <profile></profile>
+              <profile v-on:busy="busy = $event"></profile>
             </v-tabs-content>
             <v-tabs-content id="tab-password">
-              <password></password>
+              <password v-on:busy="busy = $event"></password>
             </v-tabs-content>
           </v-tabs-items>
         </v-tabs>
@@ -41,6 +48,11 @@ export default {
   components: {
     Profile,
     Password
+  },
+  data () {
+    return {
+      busy: false
+    }
   }
 }
 </script>

@@ -14,13 +14,6 @@
             <h3 class="headline mb-0">{{ $t('reset_password') }}</h3>
           </v-card-title>
           <v-card-text>
-            <v-alert 
-              color="success" 
-              icon="check_circle" 
-              v-model="form.successful" 
-              dismissible>
-              {{ status }}
-            </v-alert>
 
             <!-- Email -->
             <v-text-field
@@ -34,6 +27,12 @@
             ></v-text-field>
             <has-error :form="form" field="email"></has-error>
 
+            <v-alert 
+              color="success" 
+              v-model="form.successful" 
+              dismissible>
+              {{ status }}
+            </v-alert>
           </v-card-text>
           <v-card-actions>
             <v-btn :loading="form.busy" :disabled="form.busy" type="submit">

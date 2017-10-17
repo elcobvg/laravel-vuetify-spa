@@ -5,13 +5,6 @@
         <h5 class="subheading mb-0">{{ $t('your_password') }}</h5>
       </v-card-title>
       <v-card-text>
-        <v-alert 
-          color="success" 
-          icon="check_circle" 
-          v-model="form.successful" 
-          dismissible>
-          {{ $t('password_updated') }}
-        </v-alert>
 
         <!-- Password -->
         <v-text-field
@@ -37,10 +30,26 @@
           data-vv-as="password"
           :class="{ 'input-group--error error--text': form.errors.has('password_confirmation') }"
         ></v-text-field>
-        <has-error :form="form" field="password_confirmation"></has-error>        
+        <has-error :form="form" field="password_confirmation"></has-error>   
+
+        <v-alert 
+          color="success" 
+          v-model="form.successful" 
+          transition="scale-transition"
+          dismissible
+        >
+          {{ $t('password_updated') }}
+        </v-alert>     
       </v-card-text>
       <v-card-actions>
-        <v-btn :loading="form.busy" :disabled="form.busy" type="submit">{{ $t('update') }}</v-btn>
+        <v-btn 
+          :loading="form.busy" 
+          :disabled="form.busy" 
+          type="submit"
+          @click="$emit('busy', true)"
+        >
+          {{ $t('update') }}
+        </v-btn>
       </v-card-actions>
     </form>
   </v-card>
@@ -64,6 +73,7 @@ export default {
       await this.form.patch('/api/settings/password')
 
       this.form.reset()
+      this.$emit('busy', false)
     }
   }
 }
