@@ -24,7 +24,6 @@ const layouts = requireContext.keys()
   }, {})
 
 export default {
-  el: '#app',
 
   components: {
     Loading

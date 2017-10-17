@@ -1,51 +1,59 @@
 <template>
-  <div class="row">
-    <div class="col-md-3">
-      <card :title="$t('settings')" class="settings-card">
-        <ul class="nav flex-column nav-pills">
-          <li v-for="tab in tabs" class="nav-item">
-            <router-link :to="{ name: tab.route }" class="nav-link" active-class="active">
-              <icon :name="tab.icon"></icon>
-              {{ tab.name }}
-            </router-link>
-          </li>
-        </ul>
-      </card>
-    </div>
+  <v-layout row>
+    <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
+      <v-card>
+        <v-progress-linear 
+          :indeterminate="true" 
+          height="4" 
+          v-if="busy"
+          color="accent"
+        >
+        </v-progress-linear>
+        <v-card-title primary-title class="grey lighten-4">
+          <h3 class="headline mb-0">{{ $t('settings') }}</h3>
+        </v-card-title>
+        <v-tabs icons centered fixed>
+          <v-tabs-bar class="grey lighten-4">
+            <v-tabs-slider color="primary"></v-tabs-slider>
+            <v-tabs-item href="#tab-person">
+              <v-icon>person</v-icon>
+              {{ $t('profile') }}
+            </v-tabs-item>
+            <v-tabs-item href="#tab-password">
+              <v-icon>lock</v-icon>
+              {{ $t('password') }}
+            </v-tabs-item>
+          </v-tabs-bar>
+          <v-divider></v-divider>
 
-    <div class="col-md-9">
-      <transition name="fade" mode="out-in">
-        <router-view></router-view>
-      </transition>
-    </div>
-  </div>
+          <v-tabs-items>
+            <v-tabs-content id="tab-person">
+              <profile v-on:busy="busy = $event"></profile>
+            </v-tabs-content>
+            <v-tabs-content id="tab-password">
+              <password v-on:busy="busy = $event"></password>
+            </v-tabs-content>
+          </v-tabs-items>
+        </v-tabs>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
-export default {
-  loading: false,
+import Profile from '~/pages/settings/profile'
+import Password from '~/pages/settings/password'
 
+export default {
+  components: {
+    Profile,
+    Password
+  },
   data () {
     return {
-      tabs: [
-        {
-          icon: 'user',
-          name: this.$t('profile'),
-          route: 'settings.profile'
-        },
-        {
-          icon: 'lock',
-          name: this.$t('password'),
-          route: 'settings.password'
-        }
-      ]
+      busy: false
     }
   }
 }
 </script>
 
-<style>
-.settings-card .card-body {
-  padding: 0;
-}
-</style>

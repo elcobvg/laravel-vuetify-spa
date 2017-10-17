@@ -5,10 +5,10 @@ const mix = require('laravel-mix')
 
 mix
   .js('resources/assets/js/app.js', 'public/js')
-  .sass('resources/assets/sass/app.scss', 'public/css')
-
+  .stylus('resources/assets/stylus/app.styl', 'public/css')
   .sourceMaps()
   .disableNotifications()
+  .copyDirectory('resources/assets/img', 'public/img')
 
 if (mix.inProduction()) {
   mix.version()
@@ -18,27 +18,18 @@ if (mix.inProduction()) {
     'vform',
     'axios',
     'vuex',
-    'jquery',
-    'popper.js',
     'vue-i18n',
     'vue-meta',
     'js-cookie',
-    'bootstrap',
     'vue-router',
-    'sweetalert2',
+    'vuetify',
+    'vee-validate',
     'vuex-router-sync'
   ])
 }
 
 mix.webpackConfig({
   plugins: [
-    // new BundleAnalyzerPlugin(),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery',
-      Popper: ['popper.js', 'default']
-    })
   ],
   resolve: {
     alias: {

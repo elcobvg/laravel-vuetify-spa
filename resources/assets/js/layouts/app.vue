@@ -1,21 +1,51 @@
 <template>
-  <div class="app-layout">
-    <navbar></navbar>
-
-    <div class="container mt-4">
-      <child/>
-    </div>
-  </div>
+  <v-app light>
+    <v-navigation-drawer 
+      v-if="authenticated" 
+      persistent 
+      v-model="drawer" 
+      enable-resize-watcher 
+      app
+    >
+      <nav-menu></nav-menu>
+    </v-navigation-drawer>
+    <tool-bar v-on:toggleDrawer="drawer = !drawer" :drawer="drawer"></tool-bar>
+    <main>
+      <v-content>
+        <v-container fluid>
+          <child></child>
+        </v-container>
+      </v-content>
+    </main>
+    <error-dialog></error-dialog>
+    <page-footer></page-footer>
+  </v-app>
 </template>
 
 <script>
-import Navbar from '~/components/Navbar'
+import { mapGetters } from 'vuex'
+
+import NavMenu from '~/components/NavMenu'
+import ToolBar from '~/components/ToolBar'
+import ErrorDialog from '~/components/ErrorDialog'
+import PageFooter from '~/components/PageFooter'
 
 export default {
-  name: 'app-layout',
-
   components: {
-    Navbar
+    'nav-menu': NavMenu,
+    'tool-bar': ToolBar,
+    'error-dialog': ErrorDialog,
+    'page-footer': PageFooter
+  },
+
+  computed: mapGetters({
+    authenticated: 'authCheck'
+  }),
+
+  data () {
+    return {
+      drawer: true
+    }
   }
 }
 </script>
