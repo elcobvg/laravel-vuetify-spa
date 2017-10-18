@@ -8,45 +8,42 @@
 
         <!-- Password -->
         <v-text-field
-          name="password"
-          v-model="form.password"
-          type="password"
+          :append-icon-cb="function () { eye = !eye }"
+          :append-icon="eye ? 'visibility' : 'visibility_off'"
+          :class="{ 'input-group--error error--text': form.errors.has('password') }"
+          :error-messages="errors.collect('password')"
           :hint="$t('password_length_hint')"
           :label="$t('password')"
-          :error-messages="errors.collect('password')"
-          v-validate="'min:8'"
-          :class="{ 'input-group--error error--text': form.errors.has('password') }"
+          :type="eye ? 'password' : 'text'"
+          name="password"
+          v-model="form.password"
+          v-validate="'required|min:8'"
         ></v-text-field>
         <has-error :form="form" field="password"></has-error>
 
         <!-- Password Confirmation -->
         <v-text-field
-          name="password_confirmation"
-          type="password"
-          v-model="form.password_confirmation"
-          :label="$t('confirm_password')"
-          :error-messages="errors.collect('password_confirmation')"
-          v-validate="'confirmed:password'"
-          data-vv-as="password"
           :class="{ 'input-group--error error--text': form.errors.has('password_confirmation') }"
+          :error-messages="errors.collect('password_confirmation')"
+          :label="$t('confirm_password')"
+          :type="eye ? 'password' : 'text'"
+          data-vv-as="password"
+          name="password_confirmation"
+          v-model="form.password_confirmation"
+          v-validate="'confirmed:password'"
         ></v-text-field>
         <has-error :form="form" field="password_confirmation"></has-error>   
 
-        <v-alert 
-          color="success" 
-          v-model="form.successful" 
-          transition="scale-transition"
-          dismissible
-        >
+        <v-snackbar top v-model="form.successful" color="success">
           {{ $t('password_updated') }}
-        </v-alert>     
+          <v-btn dark flat @click.native="form.clear()">{{ $t('close') }}</v-btn>
+        </v-snackbar> 
       </v-card-text>
       <v-card-actions>
         <v-btn 
-          :loading="form.busy" 
           :disabled="form.busy" 
+          :loading="form.busy" 
           type="submit"
-          @click="$emit('busy', true)"
         >
           {{ $t('update') }}
         </v-btn>
@@ -64,12 +61,15 @@ export default {
     form: new Form({
       password: '',
       password_confirmation: ''
-    })
+    }),
+    eye: true
   }),
 
   methods: {
     async update () {
       if (await this.formHasErrors()) return
+
+      this.$emit('busy', true)
 
       await this.form.patch('/api/settings/password')
 

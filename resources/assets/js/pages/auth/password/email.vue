@@ -4,9 +4,9 @@
       <v-card>
         <v-progress-linear 
           :indeterminate="true" 
+          color="accent"
           height="4" 
           v-if="form.busy"
-          color="accent"
         >
         </v-progress-linear>
         <form @submit.prevent="send" @keydown="form.onKeydown($event)">
@@ -17,22 +17,21 @@
 
             <!-- Email -->
             <v-text-field
+              :class="{ 'input-group--error error--text': form.errors.has('email') }"
+              :error-messages="errors.collect('email')"
+              :label="$t('email')"
               name="email"
               type="email"
               v-model="form.email"
-              :label="$t('email')"
-              :error-messages="errors.collect('email')"
+              v-on:focus="initForm"
               v-validate="'required|email'"
-              :class="{ 'input-group--error error--text': form.errors.has('email') }"
             ></v-text-field>
             <has-error :form="form" field="email"></has-error>
 
-            <v-alert 
-              color="success" 
-              v-model="form.successful" 
-              dismissible>
+            <v-snackbar top v-model="form.successful" color="success">
               {{ status }}
-            </v-alert>
+              <v-btn dark flat @click.native="form.clear()">{{ $t('close') }}</v-btn>
+            </v-snackbar>
           </v-card-text>
           <v-card-actions>
             <v-btn :loading="form.busy" :disabled="form.busy" type="submit">
@@ -50,6 +49,7 @@ import Form from 'vform'
 
 export default {
   name: 'email-view',
+  
   metaInfo () {
     return { title: this.$t('reset_password') }
   },
@@ -70,6 +70,10 @@ export default {
       this.status = data.status
 
       this.form.reset()
+    },
+    initForm () {
+      this.$validator.resume()
+      this.form.clear()
     }
   }
 }

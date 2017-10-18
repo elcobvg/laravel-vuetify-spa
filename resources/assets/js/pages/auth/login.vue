@@ -4,9 +4,9 @@
       <v-card>
         <v-progress-linear 
           :indeterminate="true" 
+          color="accent"
           height="4" 
           v-if="form.busy"
-          color="accent"
         >
         </v-progress-linear>
         <form @submit.prevent="login" @keydown="form.onKeydown($event)">
@@ -17,37 +17,39 @@
 
             <!-- Email -->
             <v-text-field
+              :class="{ 'input-group--error error--text': form.errors.has('email') }"
+              :error-messages="errors.collect('email')"
+              :label="$t('email')"
               name="email"
+              prepend-icon="person_outline"
               type="email"
               v-model="form.email"
-              :label="$t('email')"
-              :error-messages="errors.collect('email')"
               v-validate="'required|email'"
-              :class="{ 'input-group--error error--text': form.errors.has('email') }"
-              prepend-icon="person_outline"
             ></v-text-field>
             <has-error :form="form" field="email"></has-error>
 
             <!-- Password -->
             <v-text-field
-              name="password"
-              v-model="form.password"
-              type="password"
-              :label="$t('password')"
-              :error-messages="errors.collect('password')"
-              v-validate="'required|min:8'"
+              :append-icon-cb="function () { eye = !eye }"
+              :append-icon="eye ? 'visibility' : 'visibility_off'"
               :class="{ 'input-group--error error--text': form.errors.has('password') }"
+              :error-messages="errors.collect('password')"
+              :label="$t('password')"
+              :type="eye ? 'password' : 'text'"
+              name="password"
               prepend-icon="lock_outline"
+              v-model="form.password"
+              v-validate="'required|min:8'"
             ></v-text-field>
             <has-error :form="form" field="password"></has-error>
 
             <!-- Remember Me -->
             <v-checkbox
+              :label="$t('remember_me')"
               color="primary"
+              type="checkbox"
               v-model="remember"
               value="true"
-              :label="$t('remember_me')"
-              type="checkbox"
             ></v-checkbox>
 
             <v-btn block :loading="form.busy" :disabled="form.busy" type="submit">{{ $t('login') }}</v-btn>
@@ -81,6 +83,7 @@ export default {
       email: '',
       password: ''
     }),
+    eye: true,
     remember: false
   }),
 

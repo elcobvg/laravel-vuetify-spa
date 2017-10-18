@@ -9,7 +9,11 @@ Vue.mixin({
   },
   methods: {
     async formHasErrors () {
-      return !await this.$validator.validateAll()
+      const valid = await this.$validator.validateAll()
+      if (valid) {
+        this.$validator.pause()
+      }
+      return !valid
     }
   }
 })

@@ -8,42 +8,37 @@
 
         <!-- Name -->
         <v-text-field
+          :class="{ 'input-group--error error--text': form.errors.has('name') }"
+          :error-messages="errors.collect('name')"
+          :label="$t('name')"
           name="name"
           v-model="form.name"
-          :label="$t('name')"
-          :error-messages="errors.collect('name')"
           v-validate="'required|max:30'"
-          :class="{ 'input-group--error error--text': form.errors.has('name') }"
         ></v-text-field>
         <has-error :form="form" field="name"></has-error>
 
         <!-- Email -->
         <v-text-field
+          :class="{ 'input-group--error error--text': form.errors.has('email') }"
+          :error-messages="errors.collect('email')"
+          :label="$t('email')"
           name="email"
           type="email"
           v-model="form.email"
-          :label="$t('email')"
-          :error-messages="errors.collect('email')"
           v-validate="'required|email'"
-          :class="{ 'input-group--error error--text': form.errors.has('email') }"
         ></v-text-field>
         <has-error :form="form" field="email"></has-error>     
 
-        <v-alert 
-          color="success" 
-          v-model="form.successful"
-          transition="scale-transition"
-          dismissible
-        >
+        <v-snackbar top v-model="form.successful" color="success">
           {{ $t('info_updated') }}
-        </v-alert>
+          <v-btn dark flat @click.native="form.clear()">{{ $t('close') }}</v-btn>
+        </v-snackbar>
       </v-card-text>
       <v-card-actions>
         <v-btn 
-          :loading="form.busy" 
           :disabled="form.busy" 
+          :loading="form.busy" 
           type="submit"
-          @click="$emit('busy', true)"
         >
           {{ $t('update') }}
         </v-btn>
@@ -62,7 +57,8 @@ export default {
     form: new Form({
       name: '',
       email: ''
-    })
+    }),
+    snackbar: true
   }),
 
   computed: mapGetters({
@@ -80,6 +76,8 @@ export default {
     async update () {
       if (await this.formHasErrors()) return
 
+      this.$emit('busy', true)
+
       const { data } = await this.form.patch('/api/settings/profile')
 
       await this.$store.dispatch('updateUser', { user: data })
@@ -94,3 +92,4 @@ export default {
   }
 }
 </script>
+

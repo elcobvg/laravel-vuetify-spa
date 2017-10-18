@@ -4,9 +4,9 @@
       <v-card>
         <v-progress-linear 
           :indeterminate="true" 
+          color="accent"
           height="4" 
           v-if="form.busy"
-          color="accent"
         >
         </v-progress-linear>
         <form @submit.prevent="reset" @keydown="form.onKeydown($event)">
@@ -17,48 +17,49 @@
 
             <!-- Email -->
             <v-text-field
+              :class="{ 'input-group--error error--text': form.errors.has('email') }"
+              :error-messages="errors.collect('email')"
+              :label="$t('email')"
               name="email"
               type="email"
               v-model="form.email"
-              :label="$t('email')"
-              :error-messages="errors.collect('email')"
+              v-on:focus="initForm"
               v-validate="'required|email'"
-              :class="{ 'input-group--error error--text': form.errors.has('email') }"
             ></v-text-field>
             <has-error :form="form" field="email"></has-error>
 
             <!-- Password -->
             <v-text-field
-              name="password"
-              v-model="form.password"
-              type="password"
+              :append-icon-cb="function () { eye = !eye }"
+              :append-icon="eye ? 'visibility' : 'visibility_off'"
+              :class="{ 'input-group--error error--text': form.errors.has('password') }"
+              :error-messages="errors.collect('password')"
               :hint="$t('password_length_hint')"
               :label="$t('password')"
-              :error-messages="errors.collect('password')"
+              :type="eye ? 'password' : 'text'"
+              name="password"
+              v-model="form.password"
               v-validate="'required|min:8'"
-              :class="{ 'input-group--error error--text': form.errors.has('password') }"
             ></v-text-field>
             <has-error :form="form" field="password"></has-error>
 
             <!-- Password Confirmation -->
             <v-text-field
-              name="password_confirmation"
-              type="password"
-              v-model="form.password_confirmation"
-              :label="$t('confirm_password')"
-              :error-messages="errors.collect('password_confirmation')"
-              v-validate="'required|confirmed:password'"
-              data-vv-as="password"
               :class="{ 'input-group--error error--text': form.errors.has('password_confirmation') }"
+              :error-messages="errors.collect('password_confirmation')"
+              :label="$t('confirm_password')"
+              :type="eye ? 'password' : 'text'"
+              data-vv-as="password"
+              name="password_confirmation"
+              v-model="form.password_confirmation"
+              v-validate="'required|confirmed:password'"
             ></v-text-field>
             <has-error :form="form" field="password_confirmation"></has-error>
 
-            <v-alert 
-              color="success" 
-              v-model="form.successful" 
-              dismissible>
+            <v-snackbar top v-model="form.successful" color="success">
               {{ status }}
-            </v-alert>
+              <v-btn dark flat @click.native="form.clear()">{{ $t('close') }}</v-btn>
+            </v-snackbar>
           </v-card-text>
 
           </v-card-text>
@@ -78,6 +79,7 @@ import Form from 'vform'
 
 export default {
   name: 'reset-view',
+  
   metaInfo () {
     return { title: this.$t('reset_password') }
   },
@@ -89,7 +91,8 @@ export default {
       email: '',
       password: '',
       password_confirmation: ''
-    })
+    }),
+    eye: true
   }),
 
   methods: {
@@ -103,6 +106,10 @@ export default {
       this.status = data.status
 
       this.form.reset()
+    },
+    initForm () {
+      this.$validator.resume()
+      this.form.clear()
     }
   }
 }
