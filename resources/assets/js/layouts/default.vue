@@ -1,6 +1,8 @@
 <template>
   <v-app light>
-    <child></child>
+    <transition name="page" mode="out-in">
+      <router-view></router-view>
+    </transition>
   </v-app>
 </template>
 

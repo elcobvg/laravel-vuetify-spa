@@ -72,6 +72,7 @@
 import Form from 'vform'
 
 export default {
+  name: 'login-view',
   metaInfo () {
     return { title: this.$t('login') }
   },

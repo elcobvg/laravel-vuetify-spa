@@ -57,6 +57,7 @@ import Form from 'vform'
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'profile-view',
   data: () => ({
     form: new Form({
       name: '',

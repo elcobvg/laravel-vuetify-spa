@@ -79,6 +79,7 @@
 import Form from 'vform'
 
 export default {
+  name: 'register-view',
   metaInfo () {
     return { title: this.$t('register') }
   },

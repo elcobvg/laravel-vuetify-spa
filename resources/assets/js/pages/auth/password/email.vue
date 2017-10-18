@@ -49,6 +49,7 @@
 import Form from 'vform'
 
 export default {
+  name: 'email-view',
   metaInfo () {
     return { title: this.$t('reset_password') }
   },

@@ -77,6 +77,7 @@
 import Form from 'vform'
 
 export default {
+  name: 'reset-view',
   metaInfo () {
     return { title: this.$t('reset_password') }
   },

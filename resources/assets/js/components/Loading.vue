@@ -1,25 +1,26 @@
 <template>
-  <div class="progress" :style="{
-    width: `${percent}%`,
-    height: height,
-    opacity: show ? 1 : 0,
-    'background-color': canSuccess ? color : failedColor
-  }"></div>
+  <v-progress-linear 
+    v-model="percent"
+    height="2" 
+    v-show="show"
+    :color="canSuccess ? color : failedColor"
+  >
+  </v-progress-linear>
 </template>
 
 <script>
-// https://github.com/nuxt/nuxt.js/blob/master/lib/app/components/nuxt-loading.vue
+// Based on https://github.com/nuxt/nuxt.js/blob/master/lib/app/components/nuxt-loading.vue
 import Vue from 'vue'
 
 export default {
+  name: 'v-loading',
   data: () => ({
     percent: 0,
     show: false,
     canSuccess: true,
     duration: 3000,
-    height: '2px',
-    color: '#77b6ff',
-    failedColor: 'red'
+    color: 'accent',
+    failedColor: 'error'
   }),
 
   methods: {
@@ -86,17 +87,14 @@ export default {
 }
 </script>
 
-<style scoped>
-.progress {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  height: 2px;
-  width: 0%;
-  transition: width 0.2s, opacity 0.4s;
-  opacity: 1;
-  background-color: #efc14e;
-  z-index: 999999;
-}
+<style lang="stylus" scoped>
+.progress-linear
+  height: 2px
+  margin: 0
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  width: 100%
+  z-index: 999999
 </style>

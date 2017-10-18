@@ -27,7 +27,10 @@ import { mapGetters } from 'vuex'
 
 export default {
   props: {
-    drawer: Boolean
+    drawer: {
+      type: Boolean,
+      required: true
+    }
   },
 
   data: () => ({

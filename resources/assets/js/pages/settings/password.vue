@@ -59,6 +59,7 @@
 import Form from 'vform'
 
 export default {
+  name: 'password-view',
   data: () => ({
     form: new Form({
       password: '',

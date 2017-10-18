@@ -28,10 +28,10 @@
 
           <v-tabs-items>
             <v-tabs-content id="tab-person">
-              <profile v-on:busy="busy = $event"></profile>
+              <profile-view v-on:busy="busy = $event"></profile-view>
             </v-tabs-content>
             <v-tabs-content id="tab-password">
-              <password v-on:busy="busy = $event"></password>
+              <password-view v-on:busy="busy = $event"></password-view>
             </v-tabs-content>
           </v-tabs-items>
         </v-tabs>
@@ -45,9 +45,10 @@ import Profile from '~/pages/settings/profile'
 import Password from '~/pages/settings/password'
 
 export default {
+  name: 'settings-view',
   components: {
-    Profile,
-    Password
+    'profile-view': Profile,
+    'password-view': Password
   },
   data () {
     return {

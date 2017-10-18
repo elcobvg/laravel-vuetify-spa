@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-    <loading ref="loading"></loading>
-
+    <v-loading ref="loading"></v-loading>
     <transition name="page" mode="out-in">
       <component v-if="layout" :is="layout"></component>
     </transition>
@@ -26,7 +25,7 @@ const layouts = requireContext.keys()
 export default {
 
   components: {
-    Loading
+    'v-loading': Loading
   },
 
   metaInfo () {
