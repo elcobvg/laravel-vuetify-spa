@@ -2,13 +2,7 @@
   <v-layout row>
     <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
       <v-card>
-        <v-progress-linear 
-          :indeterminate="true" 
-          color="accent"
-          height="4" 
-          v-if="form.busy"
-        >
-        </v-progress-linear>
+        <form-progress :show="form.busy"></form-progress>
         <form @submit.prevent="login" @keydown="form.onKeydown($event)">
           <v-card-title primary-title>
             <h3 class="headline mb-0">{{ $t('login') }}</h3>
@@ -16,32 +10,24 @@
           <v-card-text>
 
             <!-- Email -->
-            <v-text-field
-              :class="{ 'input-group--error error--text': form.errors.has('email') }"
-              :error-messages="errors.collect('email')"
+            <email-input
+              :form="form"
               :label="$t('email')"
+              :v-errors="errors"
+              :value.sync="form.email"
               name="email"
-              prepend-icon="person_outline"
-              type="email"
-              v-model="form.email"
+              prepend="person_outline"
               v-validate="'required|email'"
-            ></v-text-field>
-            <has-error :form="form" field="email"></has-error>
+            ></email-input>
 
             <!-- Password -->
-            <v-text-field
-              :append-icon-cb="function () { eye = !eye }"
-              :append-icon="eye ? 'visibility' : 'visibility_off'"
-              :class="{ 'input-group--error error--text': form.errors.has('password') }"
-              :error-messages="errors.collect('password')"
-              :label="$t('password')"
-              :type="eye ? 'password' : 'text'"
-              name="password"
-              prepend-icon="lock_outline"
-              v-model="form.password"
+            <password-input
+              :v-errors="errors"
+              :form="form"
+              :value.sync="form.password"
+              prepend="lock_outline"
               v-validate="'required|min:8'"
-            ></v-text-field>
-            <has-error :form="form" field="password"></has-error>
+            ></password-input>
 
             <!-- Remember Me -->
             <v-checkbox
@@ -52,7 +38,9 @@
               value="true"
             ></v-checkbox>
 
-            <v-btn block :loading="form.busy" :disabled="form.busy" type="submit">{{ $t('login') }}</v-btn>
+            <v-btn block :loading="form.busy" :disabled="form.busy" type="submit">
+              {{ $t('login') }}
+            </v-btn>
 
           </v-card-text>
           <v-card-actions>

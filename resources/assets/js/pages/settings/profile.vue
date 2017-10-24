@@ -7,39 +7,31 @@
       <v-card-text>
 
         <!-- Name -->
-        <v-text-field
-          :class="{ 'input-group--error error--text': form.errors.has('name') }"
-          :error-messages="errors.collect('name')"
+        <text-input
+          :form="form"
           :label="$t('name')"
+          :v-errors="errors"
+          :value.sync="form.name"
+          counter="30"
           name="name"
-          v-model="form.name"
           v-validate="'required|max:30'"
-        ></v-text-field>
-        <has-error :form="form" field="name"></has-error>
+        ></text-input>
 
         <!-- Email -->
-        <v-text-field
-          :class="{ 'input-group--error error--text': form.errors.has('email') }"
-          :error-messages="errors.collect('email')"
+        <email-input
+          :form="form"
           :label="$t('email')"
+          :v-errors="errors"
+          :value.sync="form.email"
           name="email"
-          type="email"
-          v-model="form.email"
           v-validate="'required|email'"
-        ></v-text-field>
-        <has-error :form="form" field="email"></has-error>     
+        ></email-input>
 
-        <v-snackbar top v-model="form.successful" color="success">
-          {{ $t('info_updated') }}
-          <v-btn dark flat @click.native="form.clear()">{{ $t('close') }}</v-btn>
-        </v-snackbar>
+        <form-feedback :form="form" :text="$t('info_updated')"></form-feedback>
+
       </v-card-text>
       <v-card-actions>
-        <v-btn 
-          :disabled="form.busy" 
-          :loading="form.busy" 
-          type="submit"
-        >
+        <v-btn :disabled="form.busy" :loading="form.busy" type="submit">
           {{ $t('update') }}
         </v-btn>
       </v-card-actions>
@@ -57,8 +49,7 @@ export default {
     form: new Form({
       name: '',
       email: ''
-    }),
-    snackbar: true
+    })
   }),
 
   computed: mapGetters({

@@ -2,13 +2,7 @@
   <v-layout row>
     <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
       <v-card>
-        <v-progress-linear 
-          :indeterminate="true" 
-          height="4" 
-          v-if="busy"
-          color="accent"
-        >
-        </v-progress-linear>
+        <form-progress :show="busy"></form-progress>
         <v-card-title primary-title class="grey lighten-4">
           <h3 class="headline mb-0">{{ $t('settings') }}</h3>
         </v-card-title>
@@ -57,4 +51,3 @@ export default {
   }
 }
 </script>
-

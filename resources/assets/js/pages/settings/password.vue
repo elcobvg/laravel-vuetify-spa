@@ -7,44 +7,33 @@
       <v-card-text>
 
         <!-- Password -->
-        <v-text-field
-          :append-icon-cb="function () { eye = !eye }"
-          :append-icon="eye ? 'visibility' : 'visibility_off'"
-          :class="{ 'input-group--error error--text': form.errors.has('password') }"
-          :error-messages="errors.collect('password')"
+        <password-input
+          :form="form"
           :hint="$t('password_length_hint')"
-          :label="$t('password')"
-          :type="eye ? 'password' : 'text'"
-          name="password"
-          v-model="form.password"
+          :v-errors="errors"
+          :value.sync="form.password"
+          v-on:eye="eye = $event"
           v-validate="'required|min:8'"
-        ></v-text-field>
-        <has-error :form="form" field="password"></has-error>
+        ></password-input>
 
         <!-- Password Confirmation -->
-        <v-text-field
-          :class="{ 'input-group--error error--text': form.errors.has('password_confirmation') }"
-          :error-messages="errors.collect('password_confirmation')"
+        <password-input
+          :form="form"
+          :hide="eye"
           :label="$t('confirm_password')"
-          :type="eye ? 'password' : 'text'"
+          :v-errors="errors"
+          :value.sync="form.password_confirmation"
           data-vv-as="password"
+          hide-icon="true"
           name="password_confirmation"
-          v-model="form.password_confirmation"
-          v-validate="'confirmed:password'"
-        ></v-text-field>
-        <has-error :form="form" field="password_confirmation"></has-error>   
+          v-validate="'required|confirmed:password'"
+        ></password-input>
 
-        <v-snackbar top v-model="form.successful" color="success">
-          {{ $t('password_updated') }}
-          <v-btn dark flat @click.native="form.clear()">{{ $t('close') }}</v-btn>
-        </v-snackbar> 
+        <form-feedback :form="form" :text="$t('password_updated')"></form-feedback>
+
       </v-card-text>
       <v-card-actions>
-        <v-btn 
-          :disabled="form.busy" 
-          :loading="form.busy" 
-          type="submit"
-        >
+        <v-btn :disabled="form.busy" :loading="form.busy" type="submit">
           {{ $t('update') }}
         </v-btn>
       </v-card-actions>

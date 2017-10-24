@@ -2,13 +2,7 @@
   <v-layout row>
     <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
       <v-card>
-        <v-progress-linear 
-          :indeterminate="true" 
-          color="accent"
-          height="4" 
-          v-if="form.busy"
-        >
-        </v-progress-linear>
+        <form-progress :show="form.busy"></form-progress>
         <form @submit.prevent="register" @keydown="form.onKeydown($event)">
           <v-card-title primary-title>
             <h3 class="headline mb-0">{{ $t('register') }}</h3>
@@ -16,59 +10,55 @@
           <v-card-text>
 
             <!-- Name -->
-            <v-text-field
-              :class="{ 'input-group--error error--text': form.errors.has('name') }"
-              :error-messages="errors.collect('name')"
+            <text-input
+              :form="form"
               :label="$t('name')"
+              :v-errors="errors"
+              :value.sync="form.name"
+              counter="30"
               name="name"
-              v-model="form.name"
               v-validate="'required|max:30'"
-            ></v-text-field>
-            <has-error :form="form" field="name"></has-error>
+            ></text-input>
 
             <!-- Email -->
-            <v-text-field
-              :class="{ 'input-group--error error--text': form.errors.has('email') }"
-              :error-messages="errors.collect('email')"
+            <email-input
+              :form="form"
               :label="$t('email')"
+              :v-errors="errors"
+              :value.sync="form.email"
               name="email"
-              type="email"
-              v-model="form.email"
               v-validate="'required|email'"
-            ></v-text-field>
-            <has-error :form="form" field="email"></has-error>
+            ></email-input>
 
             <!-- Password -->
-            <v-text-field
-              :append-icon-cb="function () { eye = !eye }"
-              :append-icon="eye ? 'visibility' : 'visibility_off'"
-              :class="{ 'input-group--error error--text': form.errors.has('password') }"
-              :error-messages="errors.collect('password')"
+            <password-input
+              :form="form"
               :hint="$t('password_length_hint')"
-              :label="$t('password')"
-              :type="eye ? 'password' : 'text'"
-              name="password"
-              v-model="form.password"
+              :v-errors="errors"
+              :value.sync="form.password"
+              v-on:eye="eye = $event"
               v-validate="'required|min:8'"
-            ></v-text-field>
-            <has-error :form="form" field="password"></has-error>
+            ></password-input>
 
             <!-- Password Confirmation -->
-            <v-text-field
-              :class="{ 'input-group--error error--text': form.errors.has('password_confirmation') }"
-              :error-messages="errors.collect('password_confirmation')"
+            <password-input
+              :form="form"
+              :hide="eye"
               :label="$t('confirm_password')"
-              :type="eye ? 'password' : 'text'"
+              :v-errors="errors"
+              :value.sync="form.password_confirmation"
               data-vv-as="password"
+              hide-icon="true"
               name="password_confirmation"
-              v-model="form.password_confirmation"
               v-validate="'required|confirmed:password'"
-            ></v-text-field>
-            <has-error :form="form" field="password_confirmation"></has-error>
+            ></password-input>
+
           </v-card-text>
 
           <v-card-actions>
-            <v-btn :loading="form.busy" :disabled="form.busy" type="submit">{{ $t('register') }}</v-btn>
+            <v-btn :loading="form.busy" :disabled="form.busy" type="submit">
+              {{ $t('register') }}
+            </v-btn>
           </v-card-actions>
         </form>
       </v-card>

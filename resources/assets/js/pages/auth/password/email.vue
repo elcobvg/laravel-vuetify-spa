@@ -2,13 +2,7 @@
   <v-layout row>
     <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
       <v-card>
-        <v-progress-linear 
-          :indeterminate="true" 
-          color="accent"
-          height="4" 
-          v-if="form.busy"
-        >
-        </v-progress-linear>
+        <form-progress :show="form.busy"></form-progress>
         <form @submit.prevent="send" @keydown="form.onKeydown($event)">
           <v-card-title primary-title>
             <h3 class="headline mb-0">{{ $t('reset_password') }}</h3>
@@ -16,22 +10,17 @@
           <v-card-text>
 
             <!-- Email -->
-            <v-text-field
-              :class="{ 'input-group--error error--text': form.errors.has('email') }"
-              :error-messages="errors.collect('email')"
+            <email-input
+              :form="form"
               :label="$t('email')"
+              :v-errors="errors"
+              :value.sync="form.email"
               name="email"
-              type="email"
-              v-model="form.email"
-              v-on:focus="initForm"
               v-validate="'required|email'"
-            ></v-text-field>
-            <has-error :form="form" field="email"></has-error>
+            ></email-input>
 
-            <v-snackbar top v-model="form.successful" color="success">
-              {{ status }}
-              <v-btn dark flat @click.native="form.clear()">{{ $t('close') }}</v-btn>
-            </v-snackbar>
+            <form-feedback :form="form" :text="status"></form-feedback>
+
           </v-card-text>
           <v-card-actions>
             <v-btn :loading="form.busy" :disabled="form.busy" type="submit">

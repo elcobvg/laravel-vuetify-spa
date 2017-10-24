@@ -83,7 +83,10 @@ function setLayout (router, to) {
 function authGuard (routes) {
   return beforeEnter(routes, (to, from, next) => {
     if (!store.getters.authCheck) {
-      next({ name: 'login' })
+      next({
+        name: 'login',
+        query: { redirect: to.fullPath }
+      })
     } else {
       next()
     }
