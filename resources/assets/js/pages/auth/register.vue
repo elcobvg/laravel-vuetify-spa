@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
       <v-card>
-        <form-progress :show="form.busy"></form-progress>
+        <progress-bar :show="form.busy"></progress-bar>
         <form @submit.prevent="register" @keydown="form.onKeydown($event)">
           <v-card-title primary-title>
             <h3 class="headline mb-0">{{ $t('register') }}</h3>
@@ -56,9 +56,7 @@
           </v-card-text>
 
           <v-card-actions>
-            <v-btn :loading="form.busy" :disabled="form.busy" type="submit">
-              {{ $t('register') }}
-            </v-btn>
+            <submit-button :form="form" :label="$t('register')"></submit-button>
           </v-card-actions>
         </form>
       </v-card>

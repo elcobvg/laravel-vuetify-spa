@@ -27,13 +27,9 @@
           v-validate="'required|email'"
         ></email-input>
 
-        <form-feedback :form="form" :text="$t('info_updated')"></form-feedback>
-
       </v-card-text>
       <v-card-actions>
-        <v-btn :disabled="form.busy" :loading="form.busy" type="submit">
-          {{ $t('update') }}
-        </v-btn>
+        <submit-button :flat="true" :form="form" :label="$t('update')"></submit-button>
       </v-card-actions>
     </form>
   </v-card>
@@ -73,12 +69,11 @@ export default {
 
       await this.$store.dispatch('updateUser', { user: data })
       this.$emit('busy', false)
-    }
-  },
 
-  watch: {
-    form () {
-      console.log(this.form)
+      this.$store.dispatch('responseMessage', {
+        type: 'success',
+        text: this.$t('info_updated')
+      })
     }
   }
 }

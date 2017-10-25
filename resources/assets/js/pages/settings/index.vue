@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
       <v-card>
-        <form-progress :show="busy"></form-progress>
+        <progress-bar :show="busy"></progress-bar>
         <v-card-title primary-title class="grey lighten-4">
           <h3 class="headline mb-0">{{ $t('settings') }}</h3>
         </v-card-title>

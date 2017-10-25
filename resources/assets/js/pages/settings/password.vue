@@ -29,13 +29,11 @@
           v-validate="'required|confirmed:password'"
         ></password-input>
 
-        <form-feedback :form="form" :text="$t('password_updated')"></form-feedback>
+        <!-- <form-feedback :form="form" :text="$t('password_updated')"></form-feedback> -->
 
       </v-card-text>
       <v-card-actions>
-        <v-btn :disabled="form.busy" :loading="form.busy" type="submit">
-          {{ $t('update') }}
-        </v-btn>
+        <submit-button :flat="true" :form="form" :label="$t('update')"></submit-button>
       </v-card-actions>
     </form>
   </v-card>
@@ -64,6 +62,11 @@ export default {
 
       this.form.reset()
       this.$emit('busy', false)
+
+      this.$store.dispatch('responseMessage', {
+        type: 'success',
+        text: this.$t('password_updated')
+      })
     }
   }
 }

@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: 'form-progress',
+  name: 'progress-bar',
   props: {
     show: {
       type: [Boolean, String],

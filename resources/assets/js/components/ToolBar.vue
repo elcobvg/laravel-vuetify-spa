@@ -10,7 +10,7 @@
 
     <!-- Authenticated -->
     <template v-if="authenticated">
-      <form-progress :show="busy"></form-progress>
+      <progress-bar :show="busy"></progress-bar>
       <v-btn flat :to="{ name: 'settings.profile' }">{{ user.name }}</v-btn>
       <v-btn flat @click.prevent="logout">{{ $t('logout') }}</v-btn>
     </template>

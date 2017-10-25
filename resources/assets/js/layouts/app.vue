@@ -19,7 +19,7 @@
         </v-container>
       </v-content>
     </main>
-    <error-dialog></error-dialog>
+    <feedback-message></feedback-message>
     <page-footer></page-footer>
   </v-app>
 </template>
@@ -29,14 +29,14 @@ import { mapGetters } from 'vuex'
 
 import NavMenu from '~/components/NavMenu'
 import ToolBar from '~/components/ToolBar'
-import ErrorDialog from '~/components/ErrorDialog'
+import FeedbackMessage from '~/components/FeedbackMessage'
 import PageFooter from '~/components/PageFooter'
 
 export default {
   components: {
     'nav-menu': NavMenu,
     'tool-bar': ToolBar,
-    'error-dialog': ErrorDialog,
+    'feedback-message': FeedbackMessage,
     'page-footer': PageFooter
   },
 

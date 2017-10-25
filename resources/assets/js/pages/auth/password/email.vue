@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
       <v-card>
-        <form-progress :show="form.busy"></form-progress>
+        <progress-bar :show="form.busy"></progress-bar>
         <form @submit.prevent="send" @keydown="form.onKeydown($event)">
           <v-card-title primary-title>
             <h3 class="headline mb-0">{{ $t('reset_password') }}</h3>
@@ -19,13 +19,9 @@
               v-validate="'required|email'"
             ></email-input>
 
-            <form-feedback :form="form" :text="status"></form-feedback>
-
           </v-card-text>
           <v-card-actions>
-            <v-btn :loading="form.busy" :disabled="form.busy" type="submit">
-              {{ $t('send_password_reset_link') }}
-            </v-btn>
+            <submit-button :flat="true" :form="form" :label="$t('send_password_reset_link')"></submit-button>
           </v-card-actions>
         </form>
       </v-card>
@@ -44,7 +40,6 @@ export default {
   },
 
   data: () => ({
-    status: '',
     form: new Form({
       email: ''
     })
@@ -56,13 +51,12 @@ export default {
 
       const { data } = await this.form.post('/api/password/email')
 
-      this.status = data.status
+      this.$store.dispatch('responseMessage', {
+        type: 'success',
+        text: data.status
+      })
 
-      this.form.reset()
-    },
-    initForm () {
-      this.$validator.resume()
-      this.form.clear()
+      this.$router.push({ name: 'welcome' })
     }
   }
 }

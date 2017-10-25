@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
       <v-card>
-        <form-progress :show="form.busy"></form-progress>
+        <progress-bar :show="form.busy"></progress-bar>
         <form @submit.prevent="reset" @keydown="form.onKeydown($event)">
           <v-card-title primary-title>
             <h3 class="headline mb-0">{{ $t('reset_password') }}</h3>
@@ -41,14 +41,10 @@
               name="password_confirmation"
               v-validate="'required|confirmed:password'"
             ></password-input>
-
-            <form-feedback :form="form" :text="status"></form-feedback>
             
           </v-card-text>
           <v-card-actions>
-            <v-btn :loading="form.busy" :disabled="form.busy" type="submit">
-              {{ $t('reset_password') }}
-            </v-btn>
+            <submit-button :flat="true" :form="form" :label="$t('reset_password')"></submit-button>
           </v-card-actions>
         </form>
       </v-card>
@@ -67,7 +63,6 @@ export default {
   },
   
   data: () => ({
-    status: '',
     form: new Form({
       token: '',
       email: '',
@@ -83,15 +78,27 @@ export default {
 
       this.form.token = this.$route.params.token
 
-      const { data } = await this.form.post('/api/password/reset')
+      const response = await this.form.post('/api/password/reset')
 
-      this.status = data.status
+      // Login user if reset successful.
+      const { data } = await this.form.post('/api/login')
 
-      this.form.reset()
-    },
-    initForm () {
-      this.$validator.resume()
-      this.form.clear()
+      // Save the token.
+      this.$store.dispatch('saveToken', {
+        token: data.token,
+        remember: false
+      })
+
+      // Fetch the user.
+      await this.$store.dispatch('fetchUser')
+
+      this.$store.dispatch('responseMessage', {
+        type: 'success',
+        text: response.data.status
+      })
+
+      // Redirect home.
+      this.$router.push({ name: 'home' })
     }
   }
 }
