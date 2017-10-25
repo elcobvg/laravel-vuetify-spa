@@ -1,6 +1,6 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-if="responseMessage.modal" :value.sync="responseMessage.text" persistent>
+    <v-dialog v-if="responseMessage.modal" :value.sync="responseMessage.show" persistent>
       <v-card>
         <v-card-title class="headline white--text" :class="responseMessage.type">{{ responseMessage.title }}</v-card-title>
         <v-divider></v-divider>
@@ -10,7 +10,7 @@
         </v-layout>
       </v-card>
     </v-dialog>
-    <v-snackbar v-else top v-model="responseMessage.text" :color="responseMessage.type">
+    <v-snackbar v-else top v-model="responseMessage.show" :color="responseMessage.type">
       {{ responseMessage.text }}
       <v-btn dark flat @click.native="close">{{ $t('close') }}</v-btn>
     </v-snackbar>

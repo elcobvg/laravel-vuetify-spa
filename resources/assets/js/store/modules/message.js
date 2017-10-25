@@ -5,7 +5,8 @@ export const state = {
   type: '',
   title: '',
   text: '',
-  modal: false
+  modal: false,
+  show: false
 }
 
 // mutations
@@ -15,12 +16,14 @@ export const mutations = {
     state.text = text
     state.title = title
     state.modal = modal
+    state.show = true
   },
   [types.CLEAR_MSG] (state) {
     state.type = ''
     state.text = ''
     state.title = ''
     state.modal = false
+    state.show = false
   }
 }
 
@@ -29,7 +32,7 @@ export const actions = {
   responseMessage ({ commit, state }, payload) {
     commit(types.RESPONSE_MSG, payload)
     if (!state.modal) {
-      setTimeout(() => { commit(types.CLEAR_MSG) }, 8000)
+      setTimeout(() => { commit(types.CLEAR_MSG) }, 6500)
     }
   },
   clearMessage ({ commit }) {
@@ -44,7 +47,8 @@ export const getters = {
       type: state.type, 
       text: state.text,
       title: state.title,
-      modal: state.modal
+      modal: state.modal,
+      show: state.show
     }
   }
 }
