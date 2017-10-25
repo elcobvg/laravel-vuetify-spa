@@ -11,19 +11,11 @@ export const state = {
 
 // mutations
 export const mutations = {
-  [types.RESPONSE_MSG] (state, { type, text, title, modal }) {
-    state.type = type
-    state.text = text
-    state.title = title
-    state.modal = modal
-    state.show = true
+  [types.RESPONSE_MSG] (state, payload) {
+    Object.assign(state, { ...payload, show: true })
   },
   [types.CLEAR_MSG] (state) {
-    state.type = ''
-    state.text = ''
-    state.title = ''
-    state.modal = false
-    state.show = false
+    Object.assign(state, { type: '', text: '', title: '', modal: false, show: false })
   }
 }
 
@@ -42,13 +34,7 @@ export const actions = {
 
 // getters
 export const getters = {
-  responseMessage: state => { 
-    return {
-      type: state.type, 
-      text: state.text,
-      title: state.title,
-      modal: state.modal,
-      show: state.show
-    }
+  responseMessage: state => {
+    return { ...state }
   }
 }
