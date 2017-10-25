@@ -2,13 +2,7 @@
   <v-layout row>
     <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
       <v-card>
-        <v-progress-linear 
-          :indeterminate="true" 
-          height="4" 
-          v-if="form.busy"
-          color="accent"
-        >
-        </v-progress-linear>
+        <progress-bar :show="form.busy"></progress-bar>
         <form @submit.prevent="register" @keydown="form.onKeydown($event)">
           <v-card-title primary-title>
             <h3 class="headline mb-0">{{ $t('register') }}</h3>
@@ -16,57 +10,53 @@
           <v-card-text>
 
             <!-- Name -->
-            <v-text-field
-              name="name"
-              v-model="form.name"
+            <text-input
+              :form="form"
               :label="$t('name')"
-              :error-messages="errors.collect('name')"
+              :v-errors="errors"
+              :value.sync="form.name"
+              counter="30"
+              name="name"
               v-validate="'required|max:30'"
-              :class="{ 'input-group--error error--text': form.errors.has('name') }"
-            ></v-text-field>
-            <has-error :form="form" field="name"></has-error>
+            ></text-input>
 
             <!-- Email -->
-            <v-text-field
-              name="email"
-              type="email"
-              v-model="form.email"
+            <email-input
+              :form="form"
               :label="$t('email')"
-              :error-messages="errors.collect('email')"
+              :v-errors="errors"
+              :value.sync="form.email"
+              name="email"
               v-validate="'required|email'"
-              :class="{ 'input-group--error error--text': form.errors.has('email') }"
-            ></v-text-field>
-            <has-error :form="form" field="email"></has-error>
+            ></email-input>
 
             <!-- Password -->
-            <v-text-field
-              name="password"
-              v-model="form.password"
-              type="password"
+            <password-input
+              :form="form"
               :hint="$t('password_length_hint')"
-              :label="$t('password')"
-              :error-messages="errors.collect('password')"
+              :v-errors="errors"
+              :value.sync="form.password"
+              v-on:eye="eye = $event"
               v-validate="'required|min:8'"
-              :class="{ 'input-group--error error--text': form.errors.has('password') }"
-            ></v-text-field>
-            <has-error :form="form" field="password"></has-error>
+            ></password-input>
 
             <!-- Password Confirmation -->
-            <v-text-field
-              name="password_confirmation"
-              type="password"
-              v-model="form.password_confirmation"
+            <password-input
+              :form="form"
+              :hide="eye"
               :label="$t('confirm_password')"
-              :error-messages="errors.collect('password_confirmation')"
-              v-validate="'required|confirmed:password'"
+              :v-errors="errors"
+              :value.sync="form.password_confirmation"
               data-vv-as="password"
-              :class="{ 'input-group--error error--text': form.errors.has('password_confirmation') }"
-            ></v-text-field>
-            <has-error :form="form" field="password_confirmation"></has-error>
+              hide-icon="true"
+              name="password_confirmation"
+              v-validate="'required|confirmed:password'"
+            ></password-input>
+
           </v-card-text>
 
           <v-card-actions>
-            <v-btn :loading="form.busy" :disabled="form.busy" type="submit">{{ $t('register') }}</v-btn>
+            <submit-button :form="form" :label="$t('register')"></submit-button>
           </v-card-actions>
         </form>
       </v-card>
@@ -79,6 +69,7 @@
 import Form from 'vform'
 
 export default {
+  name: 'register-view',
   metaInfo () {
     return { title: this.$t('register') }
   },
@@ -89,7 +80,8 @@ export default {
       email: '',
       password: '',
       password_confirmation: ''
-    })
+    }),
+    eye: true
   }),
 
   methods: {

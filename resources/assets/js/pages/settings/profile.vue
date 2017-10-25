@@ -7,46 +7,29 @@
       <v-card-text>
 
         <!-- Name -->
-        <v-text-field
-          name="name"
-          v-model="form.name"
+        <text-input
+          :form="form"
           :label="$t('name')"
-          :error-messages="errors.collect('name')"
+          :v-errors="errors"
+          :value.sync="form.name"
+          counter="30"
+          name="name"
           v-validate="'required|max:30'"
-          :class="{ 'input-group--error error--text': form.errors.has('name') }"
-        ></v-text-field>
-        <has-error :form="form" field="name"></has-error>
+        ></text-input>
 
         <!-- Email -->
-        <v-text-field
-          name="email"
-          type="email"
-          v-model="form.email"
+        <email-input
+          :form="form"
           :label="$t('email')"
-          :error-messages="errors.collect('email')"
+          :v-errors="errors"
+          :value.sync="form.email"
+          name="email"
           v-validate="'required|email'"
-          :class="{ 'input-group--error error--text': form.errors.has('email') }"
-        ></v-text-field>
-        <has-error :form="form" field="email"></has-error>     
+        ></email-input>
 
-        <v-alert 
-          color="success" 
-          v-model="form.successful"
-          transition="scale-transition"
-          dismissible
-        >
-          {{ $t('info_updated') }}
-        </v-alert>
       </v-card-text>
       <v-card-actions>
-        <v-btn 
-          :loading="form.busy" 
-          :disabled="form.busy" 
-          type="submit"
-          @click="$emit('busy', true)"
-        >
-          {{ $t('update') }}
-        </v-btn>
+        <submit-button :flat="true" :form="form" :label="$t('update')"></submit-button>
       </v-card-actions>
     </form>
   </v-card>
@@ -57,6 +40,7 @@ import Form from 'vform'
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'profile-view',
   data: () => ({
     form: new Form({
       name: '',
@@ -79,17 +63,19 @@ export default {
     async update () {
       if (await this.formHasErrors()) return
 
+      this.$emit('busy', true)
+
       const { data } = await this.form.patch('/api/settings/profile')
 
       await this.$store.dispatch('updateUser', { user: data })
       this.$emit('busy', false)
-    }
-  },
 
-  watch: {
-    form () {
-      console.log(this.form)
+      this.$store.dispatch('responseMessage', {
+        type: 'success',
+        text: this.$t('info_updated')
+      })
     }
   }
 }
 </script>
+

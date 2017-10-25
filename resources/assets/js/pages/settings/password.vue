@@ -7,49 +7,33 @@
       <v-card-text>
 
         <!-- Password -->
-        <v-text-field
-          name="password"
-          v-model="form.password"
-          type="password"
+        <password-input
+          :form="form"
           :hint="$t('password_length_hint')"
-          :label="$t('password')"
-          :error-messages="errors.collect('password')"
-          v-validate="'min:8'"
-          :class="{ 'input-group--error error--text': form.errors.has('password') }"
-        ></v-text-field>
-        <has-error :form="form" field="password"></has-error>
+          :v-errors="errors"
+          :value.sync="form.password"
+          v-on:eye="eye = $event"
+          v-validate="'required|min:8'"
+        ></password-input>
 
         <!-- Password Confirmation -->
-        <v-text-field
-          name="password_confirmation"
-          type="password"
-          v-model="form.password_confirmation"
+        <password-input
+          :form="form"
+          :hide="eye"
           :label="$t('confirm_password')"
-          :error-messages="errors.collect('password_confirmation')"
-          v-validate="'confirmed:password'"
+          :v-errors="errors"
+          :value.sync="form.password_confirmation"
           data-vv-as="password"
-          :class="{ 'input-group--error error--text': form.errors.has('password_confirmation') }"
-        ></v-text-field>
-        <has-error :form="form" field="password_confirmation"></has-error>   
+          hide-icon="true"
+          name="password_confirmation"
+          v-validate="'required|confirmed:password'"
+        ></password-input>
 
-        <v-alert 
-          color="success" 
-          v-model="form.successful" 
-          transition="scale-transition"
-          dismissible
-        >
-          {{ $t('password_updated') }}
-        </v-alert>     
+        <!-- <form-feedback :form="form" :text="$t('password_updated')"></form-feedback> -->
+
       </v-card-text>
       <v-card-actions>
-        <v-btn 
-          :loading="form.busy" 
-          :disabled="form.busy" 
-          type="submit"
-          @click="$emit('busy', true)"
-        >
-          {{ $t('update') }}
-        </v-btn>
+        <submit-button :flat="true" :form="form" :label="$t('update')"></submit-button>
       </v-card-actions>
     </form>
   </v-card>
@@ -59,21 +43,30 @@
 import Form from 'vform'
 
 export default {
+  name: 'password-view',
   data: () => ({
     form: new Form({
       password: '',
       password_confirmation: ''
-    })
+    }),
+    eye: true
   }),
 
   methods: {
     async update () {
       if (await this.formHasErrors()) return
 
+      this.$emit('busy', true)
+
       await this.form.patch('/api/settings/password')
 
       this.form.reset()
       this.$emit('busy', false)
+
+      this.$store.dispatch('responseMessage', {
+        type: 'success',
+        text: this.$t('password_updated')
+      })
     }
   }
 }

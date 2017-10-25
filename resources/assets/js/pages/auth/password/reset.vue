@@ -2,13 +2,7 @@
   <v-layout row>
     <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
       <v-card>
-        <v-progress-linear 
-          :indeterminate="true" 
-          height="4" 
-          v-if="form.busy"
-          color="accent"
-        >
-        </v-progress-linear>
+        <progress-bar :show="form.busy"></progress-bar>
         <form @submit.prevent="reset" @keydown="form.onKeydown($event)">
           <v-card-title primary-title>
             <h3 class="headline mb-0">{{ $t('reset_password') }}</h3>
@@ -16,56 +10,41 @@
           <v-card-text>
 
             <!-- Email -->
-            <v-text-field
-              name="email"
-              type="email"
-              v-model="form.email"
+            <email-input
+              :form="form"
               :label="$t('email')"
-              :error-messages="errors.collect('email')"
+              :v-errors="errors"
+              :value.sync="form.email"
+              name="email"
               v-validate="'required|email'"
-              :class="{ 'input-group--error error--text': form.errors.has('email') }"
-            ></v-text-field>
-            <has-error :form="form" field="email"></has-error>
+            ></email-input>
 
             <!-- Password -->
-            <v-text-field
-              name="password"
-              v-model="form.password"
-              type="password"
+            <password-input
+              :form="form"
               :hint="$t('password_length_hint')"
-              :label="$t('password')"
-              :error-messages="errors.collect('password')"
+              :v-errors="errors"
+              :value.sync="form.password"
+              v-on:eye="eye = $event"
               v-validate="'required|min:8'"
-              :class="{ 'input-group--error error--text': form.errors.has('password') }"
-            ></v-text-field>
-            <has-error :form="form" field="password"></has-error>
+            ></password-input>
 
             <!-- Password Confirmation -->
-            <v-text-field
-              name="password_confirmation"
-              type="password"
-              v-model="form.password_confirmation"
+            <password-input
+              :form="form"
+              :hide="eye"
               :label="$t('confirm_password')"
-              :error-messages="errors.collect('password_confirmation')"
-              v-validate="'required|confirmed:password'"
+              :v-errors="errors"
+              :value.sync="form.password_confirmation"
               data-vv-as="password"
-              :class="{ 'input-group--error error--text': form.errors.has('password_confirmation') }"
-            ></v-text-field>
-            <has-error :form="form" field="password_confirmation"></has-error>
-
-            <v-alert 
-              color="success" 
-              v-model="form.successful" 
-              dismissible>
-              {{ status }}
-            </v-alert>
-          </v-card-text>
-
+              hide-icon="true"
+              name="password_confirmation"
+              v-validate="'required|confirmed:password'"
+            ></password-input>
+            
           </v-card-text>
           <v-card-actions>
-            <v-btn :loading="form.busy" :disabled="form.busy" type="submit">
-              {{ $t('reset_password') }}
-            </v-btn>
+            <submit-button :flat="true" :form="form" :label="$t('reset_password')"></submit-button>
           </v-card-actions>
         </form>
       </v-card>
@@ -77,18 +56,20 @@
 import Form from 'vform'
 
 export default {
+  name: 'reset-view',
+  
   metaInfo () {
     return { title: this.$t('reset_password') }
   },
   
   data: () => ({
-    status: '',
     form: new Form({
       token: '',
       email: '',
       password: '',
       password_confirmation: ''
-    })
+    }),
+    eye: true
   }),
 
   methods: {
@@ -97,11 +78,27 @@ export default {
 
       this.form.token = this.$route.params.token
 
-      const { data } = await this.form.post('/api/password/reset')
+      const response = await this.form.post('/api/password/reset')
 
-      this.status = data.status
+      // Login user if reset successful.
+      const { data } = await this.form.post('/api/login')
 
-      this.form.reset()
+      // Save the token.
+      this.$store.dispatch('saveToken', {
+        token: data.token,
+        remember: false
+      })
+
+      // Fetch the user.
+      await this.$store.dispatch('fetchUser')
+
+      this.$store.dispatch('responseMessage', {
+        type: 'success',
+        text: response.data.status
+      })
+
+      // Redirect home.
+      this.$router.push({ name: 'home' })
     }
   }
 }

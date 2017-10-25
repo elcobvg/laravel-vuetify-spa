@@ -44,6 +44,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'welcome-view',
   layout: 'default',
 
   metaInfo () {

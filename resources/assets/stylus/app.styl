@@ -2,16 +2,19 @@
 @import '~vuetify/src/stylus/main'
 @require '~vuetify/src/stylus/settings/_colors'
 
+a
+  cursor: pointer
+  text-decoration: none
+  
+  &:hover
+    text-decoration: underline
+
 .invalid-feedback
   color: $red.accent-2
   margin-top: -20px
   
-.card .progress-linear
-  height: 4px
-  margin: 0
-  position: absolute
-  top: 0
-  left: 0
-  right: 0
-  width: 100%
-  z-index: 999999
+.card
+  .snack__content
+    max-width: 100vw
+    min-width: 100vw
+    

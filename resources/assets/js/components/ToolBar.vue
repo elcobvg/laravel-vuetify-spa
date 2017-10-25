@@ -10,6 +10,7 @@
 
     <!-- Authenticated -->
     <template v-if="authenticated">
+      <progress-bar :show="busy"></progress-bar>
       <v-btn flat :to="{ name: 'settings.profile' }">{{ user.name }}</v-btn>
       <v-btn flat @click.prevent="logout">{{ $t('logout') }}</v-btn>
     </template>
@@ -27,11 +28,15 @@ import { mapGetters } from 'vuex'
 
 export default {
   props: {
-    drawer: Boolean
+    drawer: {
+      type: Boolean,
+      required: true
+    }
   },
 
   data: () => ({
-    appName: window.config.appName
+    appName: window.config.appName,
+    busy: false
   }),
 
   computed: mapGetters({
@@ -44,12 +49,15 @@ export default {
       this.$emit('toggleDrawer')
     },
     async logout () {
+      this.busy = true
+
       if (this.drawer) {
         this.toggleDrawer()
       }
 
       // Log out the user.
       await this.$store.dispatch('logout')
+      this.busy = false
 
       // Redirect to login.
       this.$router.push({ name: 'login' })
