@@ -2,7 +2,7 @@
   <v-layout row>
     <v-flex xs12 sm8 offset-sm2 lg4 offset-lg4>
       <v-card>
-        <progress-bar :show="form.busy"></progress-bar>
+        <progress-bar :show="busy"></progress-bar>
         <form @submit.prevent="login" @keydown="form.onKeydown($event)">
           <v-card-title primary-title>
             <h3 class="headline mb-0">{{ $t('login') }}</h3>
@@ -70,12 +70,14 @@ export default {
       password: ''
     }),
     eye: true,
-    remember: false
+    remember: false,
+    busy: false
   }),
 
   methods: {
     async login () {
       if (await this.formHasErrors()) return
+      this.busy = true
 
       // Submit the form.
       const { data } = await this.form.post('/api/login')
@@ -88,6 +90,7 @@ export default {
 
       // Fetch the user.
       await this.$store.dispatch('fetchUser')
+      this.busy = false
 
       // Redirect home.
       this.$router.push({ name: 'home' })
