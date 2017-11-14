@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
@@ -17,5 +18,6 @@ const modules = requireContext.keys()
 
 export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
-  modules
+  modules,
+  plugins: [createPersistedState({ storage: window.sessionStorage })]
 })
