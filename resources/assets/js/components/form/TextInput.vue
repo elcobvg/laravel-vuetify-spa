@@ -56,7 +56,7 @@ export default {
       return this.vErrors.collect(this.name)
     },
     errorClass () {
-      return this.form.errors.has(this.name) ? 'input-group--error error--text' : ''
+      return this.form.errors.has(this.name) && 'input-group--error error--text'
     },
     _value: {
       get () {

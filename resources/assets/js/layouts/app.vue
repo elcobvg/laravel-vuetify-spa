@@ -10,15 +10,13 @@
       <nav-menu></nav-menu>
     </v-navigation-drawer>
     <tool-bar v-on:toggleDrawer="drawer = !drawer" :drawer="drawer"></tool-bar>
-    <main>
-      <v-content>
-        <v-container fluid>
-          <transition name="page" mode="out-in">
-            <router-view></router-view>
-          </transition>
-        </v-container>
-      </v-content>
-    </main>
+    <v-content>
+      <v-container fluid>
+        <transition name="page" mode="out-in">
+          <router-view></router-view>
+        </transition>
+      </v-container>
+    </v-content>
     <feedback-message></feedback-message>
     <page-footer></page-footer>
   </v-app>
