@@ -6,7 +6,7 @@ Forked from https://github.com/cretueusebiu/laravel-vue-spa
 
 ## Features
 
-- Laravel 5.5 + Vue + Vue Router + Vuex
+- Laravel 5.6 + Vue + Vue Router + Vuex
 - Frontend built with [Vuetify](https://github.com/vuetifyjs/vuetify) UI framework
 - Pages with custom layouts 
 - Examples for login, register and password reset
