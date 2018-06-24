@@ -47,7 +47,8 @@ export default {
       default: false
     },
     value: {
-      type: String
+      type: String,
+      default: ''
     }
   },
 
@@ -63,6 +64,7 @@ export default {
         return this.value
       },
       set (value) {
+        value = value || ''
         this.$emit('update:value', value.trim())
         this.$emit('input', value.trim())
       }
