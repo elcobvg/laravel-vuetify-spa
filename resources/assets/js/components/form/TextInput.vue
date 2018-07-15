@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-text-field
+      :browser-autocomplete="browserAutocomplete"
       :class="errorClass"
       :counter="counter"
       :error-messages="errorMessages"
@@ -49,7 +50,8 @@ export default {
     value: {
       type: String,
       default: ''
-    }
+    },
+    browserAutocomplete: String,
   },
 
   computed: {

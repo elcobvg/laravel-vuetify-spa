@@ -15,6 +15,7 @@
               :label="$t('name')"
               :v-errors="errors"
               :value.sync="form.name"
+              browser-autocomplete="name"
               counter="30"
               name="name"
               v-validate="'required|max:30'"
@@ -36,7 +37,9 @@
               :hint="$t('password_length_hint')"
               :v-errors="errors"
               :value.sync="form.password"
+              browser-autocomplete="new-password"
               v-on:eye="eye = $event"
+              name="password"
               v-validate="'required|min:8'"
             ></password-input>
 
@@ -47,6 +50,7 @@
               :label="$t('confirm_password')"
               :v-errors="errors"
               :value.sync="form.password_confirmation"
+              browser-autocomplete="new-password"
               data-vv-as="password"
               hide-icon="true"
               name="password_confirmation"

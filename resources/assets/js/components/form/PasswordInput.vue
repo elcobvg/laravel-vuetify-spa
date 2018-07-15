@@ -1,7 +1,8 @@
 <template>
   <div>
     <v-text-field
-      :append-icon-cb="toggleVisibility"
+      @click:append="toggleVisibility"
+      browser-autocomplete="current-password"
       :append-icon="icon"
       :class="errorClass"
       :counter="counter"

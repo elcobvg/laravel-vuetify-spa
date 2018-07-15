@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-text-field
+      browser-autocomplete="current-password"
       :class="errorClass"
       :counter="counter"
       :error-messages="errorMessages"
